@@ -1,0 +1,59 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CRUD App</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">CRUD App</h1>
+      <form id="create-form" class="form">
+        <label for="name" class="label">Name:</label>
+        <input type="text" id="name" name="name" class="input">
+        <br><br>
+        <label for="email" class="label">Email:</label>
+        <input type="email" id="email" name="email" class="input">
+        <br><br>
+        <input type="submit" value="Create" class="button">
+      </form>
+      <div id="users-list" class="users-list"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+    <script>
+      const createForm = document.getElementById('create-form');
+      createForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        axios.post('/create', { name, email })
+          .then((response) => {
+            console.log(response.data);
+            getUsers();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      });
+
+      const getUsers = () => {
+        axios.get('/read')
+          .then((response) => {
+            const usersList = document.getElementById('users-list');
+            usersList.innerHTML = '';
+            response.data.users.forEach((user) => {
+              const userElement = document.createElement('div');
+              userElement.textContent = `Name: ${user.name}, Email: ${user.email}`;
+              usersList.appendChild(userElement);
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      };
+
+      getUsers();
+    </script>
+  </body>
+</html>
