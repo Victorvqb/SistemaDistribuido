@@ -19,7 +19,7 @@ db = firebase.database()
 def create():
     data = request.get_json()
     db.child("users").push(data)
-    return jsonify({"message": "Data created successfully"})
+    return jsonify({"message": "Criado com sucesso"})
 
 # Read 
 @app.route('/read', methods=['GET'])
@@ -32,14 +32,14 @@ def read():
 def update():
     data = request.get_json()
     db.child("users").child(data["id"]).update(data)
-    return jsonify({"message": "Data updated successfully"})
+    return jsonify({"message": "Atualizado com sucesso"})
 
 # Delete 
 @app.route('/delete', methods=['DELETE'])
 def delete():
     data = request.get_json()
     db.child("users").child(data["id"]).remove()
-    return jsonify({"message": "Data deleted successfully"})
+    return jsonify({"message": "Deletado com sucesso"})
 
 if __name__ == '__main__':
     app.run(debug=True)
